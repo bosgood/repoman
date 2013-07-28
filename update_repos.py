@@ -8,21 +8,20 @@ CONF_FILE = 'conf.yaml'
 CUSTOM_CONF_FILE = 'custom_conf.yaml'
 
 
-def update_repos(options, config):
+def do_update(options, config):
     dev_root = config['dev_root']
     excluded_repos = config['exclude_in_update_repo']
 
-    # Update all directories
-    if not options.all:
-        print '\033[95mSkipping %s directories: %s\033[m' % \
-            (len(excluded_repos), excluded_repos)
-        paths = [(path, '%s/%s' % \
-                    (dev_root, path)) for path in os.listdir(dev_root) if path not in excluded_repos]
-
     # Just update non-excluded directories
+    if not options.all:
+        paths = update_repos_basic(
+            excluded_repos=excluded_repos,
+            dev_root=dev_root
+        )
+
+    # Update all directories
     else:
-        paths = [(path, '%s/%s' % \
-                    (dev_root, path)) for path in os.listdir(dev_root)]
+        paths = update_all_repos(dev_root=dev_root)
 
     # Enter each directory separately and run the pull command
     for path in paths:
@@ -37,6 +36,20 @@ def update_repos(options, config):
                 os.system(config['git_pull_command'])
 
     print '\033[92m\nFetched %s repos.\033[m' % (len(paths))
+
+
+def update_all_repos(dev_root):
+    paths = [(path, '%s/%s' % \
+                (dev_root, path)) for path in os.listdir(dev_root)]
+    return paths
+
+
+def update_repos_basic(excluded_repos, dev_root):
+    print '\033[95mSkipping %s directories: %s\033[m' % \
+            (len(excluded_repos), excluded_repos)
+    paths = [(path, '%s/%s' % \
+                (dev_root, path)) for path in os.listdir(dev_root) if path not in excluded_repos]
+    return paths
 
 
 def get_config():
@@ -63,7 +76,7 @@ def main():
     parser.add_option('-g', '--group', action='store_true')
 
     options, args = parser.parse_args()
-    update_repos(options=options, config=get_config())
+    do_update(options=options, config=get_config())
 
 if __name__ == '__main__':
     main()
