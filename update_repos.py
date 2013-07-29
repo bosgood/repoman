@@ -20,6 +20,9 @@ def do_update(options, config):
             group=update_groups[options.group]
         )
 
+    elif options.individual:
+        paths = [update_one_repo(dev_root, options.individual)]
+
     # Just update non-excluded directories
     elif not options.all:
         paths = update_repos_basic(
@@ -40,6 +43,10 @@ def do_update(options, config):
         )
 
     print '\033[92m\nFetched %s repos.\033[m' % (len(paths))
+
+
+def update_one_repo(dev_root, name):
+    return (name, '%s/%s' % (dev_root, name))
 
 
 def update_repo_group(dev_root, group):
@@ -113,6 +120,7 @@ def main():
     parser.add_option('-a', '--all', action='store_true', help='Update all repositores in the directory, excluding none')
     parser.add_option('-d', '--dry_run', action='store_true', help='Only say what will happen if the command were to be run without this flag')
     parser.add_option('-g', '--group', dest='group', help='Update only a specific repo group')
+    parser.add_option('-i', '--individual', dest='individual', help='Update only a specific repo')
 
     options, args = parser.parse_args()
     do_update(options=options, config=get_config())
