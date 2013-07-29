@@ -119,10 +119,10 @@ def get_config():
 
 def main():
     parser = OptionParser()
-    parser.add_option('-a', '--all', action='store_true', help='Update all repositores in the directory, excluding none')
-    parser.add_option('-d', '--dry_run', action='store_true', help='Only say what will happen if the command were to be run without this flag')
-    parser.add_option('-g', '--group', dest='group', help='Update only a specific repo group')
-    parser.add_option('-i', '--individual', dest='individual', help='Update only a specific repo')
+    parser.add_option('-a', '--all', action='store_true', help='update all repositores in the directory, excluding none')
+    parser.add_option('-d', '--dry_run', action='store_true', help='only say what will happen if the command were to be run without this flag')
+    parser.add_option('-g', '--group', dest='group', help='update only a specific repo group')
+    parser.add_option('-i', '--individual', dest='individual', help='update only a specific repo')
 
     options, args = parser.parse_args()
     do_update(options=options, config=get_config())
