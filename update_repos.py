@@ -25,26 +25,29 @@ def do_update(options, config):
 
     # Enter each directory separately and run the pull command
     for path in paths:
-        if os.path.isdir(path[1]):
-            os.chdir(path[1])
-            dry_run_str = ''
-
-            if options.dry_run:
-                dry_run_str = '(NOT) '
-            print '\033[92m%sGetting latest copy for repo: %s\033[m' % (dry_run_str, path[0])
-            if not options.dry_run:
-                os.system(config['git_pull_command'])
+        pull_repo_updates(
+            options=options,
+            config=config,
+            path=path
+        )
 
     print '\033[92m\nFetched %s repos.\033[m' % (len(paths))
 
 
 def update_all_repos(dev_root):
+    '''
+    Updates all repos in `dev_root' whether or not they are excluded
+    '''
     paths = [(path, '%s/%s' % \
                 (dev_root, path)) for path in os.listdir(dev_root)]
     return paths
 
 
 def update_repos_basic(excluded_repos, dev_root):
+    '''
+    Updates the repos in the directory `dev_root' except the ones in
+    the setting `exclude_in_update_repo'
+    '''
     print '\033[95mSkipping %s directories: %s\033[m' % \
             (len(excluded_repos), excluded_repos)
     paths = [(path, '%s/%s' % \
@@ -52,7 +55,27 @@ def update_repos_basic(excluded_repos, dev_root):
     return paths
 
 
+def pull_repo_updates(options, config, path):
+    '''
+    Gets the latest updates from a git repo with the command specified
+    in the config file
+    '''
+    if os.path.isdir(path[1]):
+        os.chdir(path[1])
+        dry_run_str = ''
+
+        if options.dry_run:
+            dry_run_str = '(NOT) '
+        print '\033[92m%sGetting latest copy for repo: %s\033[m' % (dry_run_str, path[0])
+        if not options.dry_run:
+            os.system(config['git_pull_command'])
+
+
 def get_config():
+    '''
+    Gets a dict representing the options configured in CONF_FILE,
+    overridden by the options configured in CUSTOM_CONF_FILE
+    '''
     config = {}
     config_paths = [CONF_FILE, CUSTOM_CONF_FILE]
     for config_path in config_paths:
