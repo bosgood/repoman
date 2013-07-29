@@ -5,7 +5,7 @@ import os
 from optparse import OptionParser
 
 CONF_FILE = 'conf.yaml'
-CUSTOM_CONF_FILE = 'custom_conf.yaml'
+CUSTOM_CONF_FILE = '.repoman.yaml'
 
 
 def do_update(options, config):
@@ -102,7 +102,12 @@ def get_config():
     overridden by the options configured in CUSTOM_CONF_FILE
     '''
     config = {}
-    config_paths = [CONF_FILE, CUSTOM_CONF_FILE]
+    config_paths = [
+        # default config file in the directory of this binary
+        '%s/%s' % (os.path.realpath(__file__), CONF_FILE),
+        # custom config file at ~/.repoman.yaml
+        '%s/%s' % (os.path.expanduser('~'), CUSTOM_CONF_FILE)
+    ]
     for config_path in config_paths:
         try:
             with open(config_path, 'r') as stream:
