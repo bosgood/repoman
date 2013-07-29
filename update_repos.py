@@ -11,9 +11,19 @@ CUSTOM_CONF_FILE = 'custom_conf.yaml'
 def do_update(options, config):
     dev_root = config['dev_root']
     excluded_repos = config['exclude_in_update_repo']
+    update_groups = config['update_groups']
+
+    import ipdb; ipdb.set_trace()
+
+    # Group specified, update only those
+    if options.group:
+        paths = update_repo_group(
+            dev_root=dev_root,
+            group=update_groups[options.group]
+        )
 
     # Just update non-excluded directories
-    if not options.all:
+    elif not options.all:
         paths = update_repos_basic(
             excluded_repos=excluded_repos,
             dev_root=dev_root
@@ -32,6 +42,14 @@ def do_update(options, config):
         )
 
     print '\033[92m\nFetched %s repos.\033[m' % (len(paths))
+
+
+def update_repo_group(dev_root, group):
+    '''
+    Updates only the repos in the given group
+    '''
+    paths = [(path, '%s/%s' % (dev_root, path)) for path in group]
+    return paths
 
 
 def update_all_repos(dev_root):
@@ -96,7 +114,7 @@ def main():
     parser = OptionParser()
     parser.add_option('-a', '--all', action='store_true', help='Update all repositores in the directory, excluding none')
     parser.add_option('-d', '--dry_run', action='store_true', help='Only say what will happen if the command were to be run without this flag')
-    # parser.add_option('-g', '--group', dest='group', help='Update only a specific repo group')
+    parser.add_option('-g', '--group', dest='group', help='Update only a specific repo group')
 
     options, args = parser.parse_args()
     do_update(options=options, config=get_config())
