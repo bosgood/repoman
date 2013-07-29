@@ -13,8 +13,6 @@ def do_update(options, config):
     excluded_repos = config['exclude_in_update_repo']
     update_groups = config['update_groups']
 
-    import ipdb; ipdb.set_trace()
-
     # Group specified, update only those
     if options.group:
         paths = update_repo_group(
