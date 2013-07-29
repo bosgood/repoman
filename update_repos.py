@@ -45,15 +45,19 @@ def do_update(options, config):
     print '\033[92m\nFetched %s repos.\033[m' % (len(paths))
 
 
-def update_one_repo(dev_root, name):
-    return (name, '%s/%s' % (dev_root, name))
+def path_pair(dev_root, path):
+    return (path, '%s/%s' % (dev_root, path))
+
+
+def update_one_repo(dev_root, path):
+    return path_pair(dev_root, path)
 
 
 def update_repo_group(dev_root, group):
     '''
     Updates only the repos in the given group
     '''
-    paths = [(path, '%s/%s' % (dev_root, path)) for path in group]
+    paths = [(path_pair(dev_root, path)) for path in group]
     return paths
 
 
@@ -61,8 +65,7 @@ def update_all_repos(dev_root):
     '''
     Updates all repos in `dev_root' whether or not they are excluded
     '''
-    paths = [(path, '%s/%s' % \
-                (dev_root, path)) for path in os.listdir(dev_root)]
+    paths = [path_pair(dev_root, path) for path in os.listdir(dev_root)]
     return paths
 
 
@@ -73,8 +76,7 @@ def update_repos_basic(excluded_repos, dev_root):
     '''
     print '\033[95mSkipping %s directories: %s\033[m' % \
             (len(excluded_repos), excluded_repos)
-    paths = [(path, '%s/%s' % \
-                (dev_root, path)) for path in os.listdir(dev_root) if path not in excluded_repos]
+    paths = [(path_pair(dev_root, path)) for path in os.listdir(dev_root) if path not in excluded_repos]
     return paths
 
 
