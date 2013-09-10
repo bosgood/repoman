@@ -114,10 +114,8 @@ def get_config():
                 file_data = yaml.load(stream)
                 config.update(file_data)
 
-        except Exception:
-            if config_path == CONF_FILE:
-                print 'Configuration file %s not found.' % CONF_FILE
-                raise
+        except Exception, e:
+            print 'Exception loading configuration file (path=%s, message=%s)' % (config_path, e)
 
     return config
 
