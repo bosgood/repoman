@@ -104,7 +104,7 @@ def get_config():
     config = {}
     config_paths = [
         # default config file in the directory of this binary
-        '%s/%s' % (os.path.realpath(__file__), CONF_FILE),
+        '%s/%s' % (os.path.dirname(os.path.realpath(__file__)), CONF_FILE),
         # custom config file at ~/.repoman.yaml
         '%s/%s' % (os.path.expanduser('~'), CUSTOM_CONF_FILE)
     ]
