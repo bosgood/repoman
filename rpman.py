@@ -10,8 +10,8 @@ CUSTOM_CONF_FILE = '.repoman.yaml'
 
 def do_update(options, config):
     dev_root = config['dev_root']
-    excluded_repos = config['exclude_in_update_repo']
-    update_groups = config['update_groups']
+    excluded_repos = config['exclude_in_update_repo'] or []
+    update_groups = config['update_groups'] or {}
 
     # Group specified, update only those
     if options.group:
