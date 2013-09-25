@@ -10,7 +10,7 @@ setup(
     include_package_data=True,
     url='http://github.com/bosgood/repoman',
     install_requires=[
-        'pyyaml==1.0.0'
+        'pyyaml==3.10'
     ],
     dependency_links=[],
     platforms=["any"],
