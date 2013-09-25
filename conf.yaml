@@ -11,8 +11,10 @@ dev_root: ~/dev/src
 
 # Repos to exclude from the global update script
 # exclude_in_update_repo:
-#    -
+#    - repo1
 
 # Repos that are updatable as a group
 # update_groups:
-#    - example
+#     example:
+#         - repo1
+#         - repo2
