@@ -9,6 +9,14 @@ But hey, we're here to help you keep all of them updated.
 
 ## Setup
 
+* Clone this repo.
+
+        git clone git@github.com:bosgood/repoman.git
+
+* From the directory you cloned it to, install repoman's dependencies.
+
+        python setup.py install
+
 * Symlink `rpman.py` to somewhere in your `PATH` as `repoman`. (to find this: `echo $PATH`)
 
         ln -s /path/to/rpman.py /path/in/PATH/repoman
@@ -25,11 +33,10 @@ But hey, we're here to help you keep all of them updated.
 * To update all repos in `dev_root` except those in `exclude_in_update_repo`:
 
          repoman
-         
-* To update all repos in `<group>`:
-         
-         repoman -g <group>
 
+* To update all repos in `<group>`:
+
+         repoman -g <group>
 
 * To update one repo individually:
 
